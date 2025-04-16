@@ -5,14 +5,18 @@ use std::path::PathBuf;
 fn main() {
     println!("cargo:rerun-if-changed=gl.h");
     println!("cargo:rerun-if-changed=glfw.h");
+    println!("cargo:rerun-if-changed=glm.h");
     println!("cargo:rustc-link-lib=dylib=GL");
     println!("cargo:rustc-link-lib=dylib=glfw");
+    println!("cargo:rustc-link-lib=dylib=glm");
 
     let gl_header = env::var("GL_HEADER").unwrap_or("gl.h".into());
     let glfw_header = env::var("GLFW_HEADER").unwrap_or("glfw.h".into());
+    let glm_header = env::var("GLM_HEADER").unwrap_or("glm.h".into());
 
     gen_bindings(&gl_header, "bindings_gl.rs"); // #include <GL/gl.h>
     gen_bindings(&glfw_header, "bindings_glfw.rs"); // #include <GLFW/glfw.h>
+    gen_bindings(&glm_header, "bindings_glm.rs");
 }
 
 /// Generates bindings for a given header file.
