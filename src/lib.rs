@@ -19,14 +19,3 @@ pub mod gl {
 pub mod glfw {
     include!(concat!(env!("OUT_DIR"), "/bindings_glfw.rs"));
 }
-
-#[allow(
-    non_camel_case_types,
-    non_snake_case,
-    non_upper_case_globals,
-    dead_code,
-    unused_variables
-)]
-pub mod glm {
-    include!(concat!(env!("OUT_DIR"), "/bindings_glm.rs"));
-}

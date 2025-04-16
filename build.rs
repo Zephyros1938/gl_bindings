@@ -8,15 +8,12 @@ fn main() {
     println!("cargo:rerun-if-changed=glm.h");
     println!("cargo:rustc-link-lib=dylib=GL");
     println!("cargo:rustc-link-lib=dylib=glfw");
-    println!("cargo:rustc-link-lib=dylib=glm");
 
     let gl_header = env::var("GL_HEADER").unwrap_or("gl.h".into());
     let glfw_header = env::var("GLFW_HEADER").unwrap_or("glfw.h".into());
-    let glm_header = env::var("GLM_HEADER").unwrap_or("glm.h".into());
 
     gen_bindings(&gl_header, "bindings_gl.rs"); // #include <GL/gl.h>
     gen_bindings(&glfw_header, "bindings_glfw.rs"); // #include <GLFW/glfw.h>
-    gen_bindings(&glm_header, "bindings_glm.rs");
 }
 
 /// Generates bindings for a given header file.
@@ -38,6 +35,8 @@ fn gen_bindings(header: &str, out_name: &str) {
         .header(header)
         .generate_comments(true)
         .clang_arg("-I/usr/include")
+        .clang_arg("-I/usr/include/c++/14.2.1") // Replace 13 with your actual version
+        .clang_arg("-I/usr/include/c++/14.2.1/x86_64-pc-linux-gnu")
         .parse_callbacks(Box::new(bindgen::CargoCallbacks::new()))
         .generate()
         .expect("Unable to generate bindings");
